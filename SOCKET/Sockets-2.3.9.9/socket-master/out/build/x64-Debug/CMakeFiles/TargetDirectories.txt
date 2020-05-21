@@ -1,0 +1,3 @@
+H:/MYUTILS/SOCKET/Sockets-2.3.9.9/socket-master/out/build/x64-Debug/CMakeFiles/socket.dir
+H:/MYUTILS/SOCKET/Sockets-2.3.9.9/socket-master/out/build/x64-Debug/CMakeFiles/edit_cache.dir
+H:/MYUTILS/SOCKET/Sockets-2.3.9.9/socket-master/out/build/x64-Debug/CMakeFiles/rebuild_cache.dir

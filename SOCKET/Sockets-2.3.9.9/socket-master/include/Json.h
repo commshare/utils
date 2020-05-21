@@ -1,0 +1,118 @@
+
+#ifndef _I_JSON_H_INCLUDE
+#define _I_JSON_H_INCLUDE
+
+#include "Exception.h"
+
+#include <list>
+#include <map>
+
+#ifdef _WIN32
+#   ifdef GetObject
+#   undef GetObject
+#   endif
+#endif
+
+namespace dai {
+
+class Json
+{
+public:
+    using json_list_t = std::list<Json>;
+    using json_map_t  = std::map<std::string, Json>;
+
+    typedef enum
+    {
+        TYPE_UNKNOWN = 1,
+        TYPE_INTEGER,
+        TYPE_REAL,
+        TYPE_STRING,
+        TYPE_BOOLEAN,
+        TYPE_ARRAY,
+        TYPE_OBJECT
+    } json_type_t;
+
+public:
+    /** Default constructor */
+    Json(); //m_type(TYPE_UNKNOWN);
+
+    /** Basic type constructors */
+    Json(char value);
+
+    Json(short value);
+
+    Json(long value); //m_type(TYPE_INTEGER), m_i_value(value);
+    Json(double value); //m_type(TYPE_REAL), m_d_value(value);
+    Json(const char *value); //m_type(TYPE_STRING), m_str_value(value);
+    Json(const std::string& value); //m_type(TYPE_STRING), m_str_value(value);
+    Json(bool value); //m_type(TYPE_BOOLEAN), m_b_value(value);
+
+    /** Complex type constructor (array, object) */
+    Json(json_type_t t); //m_type(t);
+
+    virtual ~Json() = default;
+
+    char Parse(const char *buffer, size_t& index);
+
+    json_type_t Type() const;
+
+    bool HasValue(const std::string& name) const;
+
+    operator char() const;
+
+    operator short() const;
+
+    operator long() const;
+
+    operator double() const;
+
+    operator std::string() const;
+
+    operator bool() const;
+
+    const Json& operator[](const char *name) const;
+
+    Json& operator[](const char *name);
+
+    const Json& operator[](const std::string& name) const;
+
+    Json& operator[](const std::string& name);
+
+    void Add(Json data);
+
+    const std::string& GetString() const;
+
+    const json_list_t& GetArray() const;
+
+    json_list_t& GetArray();
+
+    const json_map_t& GetObject() const;
+
+    json_map_t& GetObject();
+
+    std::string ToString(bool quote = true) const;
+
+    static Json Parse(const std::string& data);
+
+    void encode(std::string& src) const;
+
+    void decode(std::string& src) const;
+
+    std::string encode(const std::string&) const;
+
+private:
+    virtual int Token(const char *buffer, size_t& index, std::string& ord);
+
+    //
+    json_type_t m_type;
+    long        m_i_value;
+    double      m_d_value;
+    std::string m_str_value;
+    bool        m_b_value;
+    json_list_t m_array;
+    json_map_t  m_object;
+};
+
+}//namespace dai
+
+#endif//_I_JSON_H_INCLUDE
